@@ -6,7 +6,8 @@
   "password":"abc123123",
   "database": "appointment_manager",
   "entities":[
-    "./src/models/*.ts"
+    "src/modules/appointments/infra/typeorm/entities/*.ts",
+    "src/modules/users/infra/typeorm/entities/*.ts"
   ],
   "migrations": [
     "./src/database/migrations/*.ts"
