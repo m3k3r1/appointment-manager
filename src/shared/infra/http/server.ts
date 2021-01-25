@@ -4,7 +4,7 @@ import 'express-async-errors';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import routes from './routes';
-import '../typeorm/database';
+import '@shared/infra/typeorm';
 
 const app = express();
 app.use(express.json());
