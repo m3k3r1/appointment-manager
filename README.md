@@ -5,3 +5,4 @@ An appointment manager API to experiment with:
   - TypeORM
   - DDD methodologies
   - JEST
+  - TSyringe
