@@ -1,8 +1,5 @@
 # appointment-manager
-An appointment manager API to undesrtand DDD methodologies
-
-
-Project to experiment with:
+An appointment manager API to experiment with:
 
   - Typescript
   - TypeORM
