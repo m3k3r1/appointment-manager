@@ -17,11 +17,11 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@modules/*" : ["modules/*"],
-      "@config/*" : ["config/*"],
-      "@shared/*": ["shared/*"],
+      "@modules/*" : ["./src/modules/*"],
+      "@config/*" : ["./src/config/*"],
+      "@shared/*": ["./src/shared/*"]
     }
   },
   "include": [
