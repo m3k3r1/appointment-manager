@@ -4,6 +4,7 @@ import UserRepository from '@modules/users/infra/typeorm/repositories/UsersRepos
 import IUserRepository from '@modules/users/repositories/IUsersRepository';
 import { container } from 'tsyringe';
 import '@modules/users/providers';
+import './providers';
 
 container.registerSingleton<IAppointmentRepository>(
   'AppointmentRepository',
