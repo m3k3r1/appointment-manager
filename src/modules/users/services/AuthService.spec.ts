@@ -1,19 +1,24 @@
 import AppError from '@shared/errors/AppError';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersReposityory';
+import IUserRepository from '../repositories/IUsersRepository';
 import AuthService from './AuthService';
 import CreateUserService from './CreateUserService';
 
-describe('AuthUser', () => {
-  it('should be able to authenticate an user with correct credentials', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-    const createUser = new CreateUserService(
-      fakeUsersRepository,
-      fakeHashProvider,
-    );
-    const authService = new AuthService(fakeUsersRepository, fakeHashProvider);
+let fakeUsersRepository: IUserRepository;
+let fakeHashProvider: IHashProvider;
+let createUser: CreateUserService;
+let authService: AuthService;
 
+describe('AuthUser', () => {
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
+    authService = new AuthService(fakeUsersRepository, fakeHashProvider);
+  });
+  it('should be able to authenticate an user with correct credentials', async () => {
     const user = await createUser.execute({
       email: 'mail@test.com',
       name: 'Miguel',
@@ -29,14 +34,6 @@ describe('AuthUser', () => {
     expect(auth.user).toEqual(user);
   });
   it('should not be able to authenticate an user with wrong credentials', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-    const createUser = new CreateUserService(
-      fakeUsersRepository,
-      fakeHashProvider,
-    );
-    const authService = new AuthService(fakeUsersRepository, fakeHashProvider);
-
     await createUser.execute({
       email: 'mail@test.com',
       name: 'Miguel',
@@ -51,11 +48,6 @@ describe('AuthUser', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
   it('should not be able to authenticate an user that doesnt exists', async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const authService = new AuthService(fakeUsersRepository, fakeHashProvider);
-
     expect(
       authService.execute({
         email: 'mail@test.com',
