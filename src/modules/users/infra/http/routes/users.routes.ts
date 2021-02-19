@@ -9,7 +9,6 @@ const usersRouter = Router();
 const upload = multer(uploadConfig);
 const usersController = new UsersController();
 const userAvatarController = new UserAvatarController();
-// usersRouter.get('/', async (request, response) => {});
 
 usersRouter.post('/', usersController.create);
 
