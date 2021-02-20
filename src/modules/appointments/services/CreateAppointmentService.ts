@@ -1,6 +1,7 @@
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
-import { getDate, getHours, isBefore, startOfHour } from 'date-fns';
+import { format, getHours, isBefore, startOfHour } from 'date-fns';
+import INotificationRepository from '@modules/notifications/repositories/INotificationRepository';
 import ICreateAppointmentDTO from '../dtos/ICreateAppointmentDTO';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentRepository from '../repositories/IAppointmentsRepository';
@@ -10,6 +11,8 @@ class CreateAppointmentService {
   constructor(
     @inject('AppointmentRepository')
     private appointmentRepository: IAppointmentRepository,
+    @inject('NotificationRepository')
+    private notificationRepository: INotificationRepository,
   ) {}
 
   public async execute({
@@ -45,6 +48,11 @@ class CreateAppointmentService {
       date: appointmentDate,
     });
 
+    const formatedDate = format(appointmentDate, `dd/MM/yyyy 'at' HH:mm'h'`);
+    await this.notificationRepository.create({
+      user_id: appointment.provider_id,
+      content: `New appointment scheduled for ${formatedDate}`,
+    });
     return appointment;
   }
 }
