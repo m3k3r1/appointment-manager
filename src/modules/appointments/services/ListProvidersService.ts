@@ -14,11 +14,6 @@ export default class ListProvidersService {
     const users = await this.usersRepository.findAllProviders({
       except_user_id: user_id,
     });
-
-    if (!users) {
-      throw new AppError('No Providers available');
-    }
-
     return users;
   }
 }
