@@ -5,6 +5,7 @@ An appointment manager API to experiment with:
   - TypeORM
   - DDD methodologies
   - JEST
+  - Caching with Redis
   - Dependency Injection with TSyringe
 
 # Features
