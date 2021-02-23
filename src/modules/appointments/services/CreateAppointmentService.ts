@@ -1,4 +1,5 @@
 import AppError from '@shared/errors/AppError';
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { injectable, inject } from 'tsyringe';
 import { format, getHours, isBefore, startOfHour } from 'date-fns';
 import INotificationRepository from '@modules/notifications/repositories/INotificationRepository';
@@ -13,6 +14,8 @@ class CreateAppointmentService {
     private appointmentRepository: IAppointmentRepository,
     @inject('NotificationRepository')
     private notificationRepository: INotificationRepository,
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -47,12 +50,19 @@ class CreateAppointmentService {
       user_id,
       date: appointmentDate,
     });
-
     const formatedDate = format(appointmentDate, `dd/MM/yyyy 'at' HH:mm'h'`);
+
     await this.notificationRepository.create({
       user_id: appointment.provider_id,
       content: `New appointment scheduled for ${formatedDate}`,
     });
+
+    await this.cacheProvider.invalidate(
+      `provider-appointments:${provider_id}:${format(
+        appointmentDate,
+        'yyyy-M-d',
+      )}`,
+    );
     return appointment;
   }
 }
